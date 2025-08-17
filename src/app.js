@@ -1,10 +1,9 @@
 const express  = require(`express`)
 const app = express()
+app.use(express.json())
 
 
-app.get(`/`, (req, res) => {
-    res.send(
-        [
+const  allStudentInfo =[
             {
                 id: 1,
                 name: `imam`,
@@ -22,21 +21,28 @@ app.get(`/`, (req, res) => {
             }
 
         ]
-    )
+app.get(`/studentInfo`, (req, res) => {
+    res.send(allStudentInfo)
 })
 
 app.get(`/about`, (req, res) => {
     res.send(`This is the about page`)
 })
-
-app.post(`/contact`, (req, res) => {
-    req.
-    res.send({
-  username: "testuser",
-  password: "123456",
-}
-)
+const user  = true
+app.post(`/addStudent` ,(req, res) => {
+    const newStudent = req.body
+    allStudentInfo.push(newStudent)
+    if(user) {
+        res.send({
+            message: 'Student Added successfully',
+            addedStudent: newStudent
+        })
+    }else{
+        res.status(401).send('Student added failed !')
+    }
 })
+
+
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000')
