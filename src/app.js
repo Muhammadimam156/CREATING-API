@@ -19,7 +19,6 @@ const  allStudentInfo =[
                 name: `hyder`,
                 email: `hyder.alison@example.com`
             }
-
         ]
    //                                                        get method
      app.get(`/`, (req, res) => {
