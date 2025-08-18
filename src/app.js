@@ -21,29 +21,48 @@ const  allStudentInfo =[
             }
 
         ]
+   //                                                        get method
+     app.get(`/`, (req, res) => {
+        res.send(`Welcome to the Student API`)
+})
+
 app.get(`/studentInfo`, (req, res) => {
     res.send(allStudentInfo)
 })
 
-app.get(`/about`, (req, res) => {
-    res.send(`This is the about page`)
-})
-const user  = true
-app.post(`/addStudent` ,(req, res) => {
+//                                                          post method
+app.post(`/studentInfo`, (req, res) => {
     const newStudent = req.body
     allStudentInfo.push(newStudent)
-    if(user) {
-        res.send({
-            message: 'Student Added successfully',
-            addedStudent: newStudent
-        })
-    }else{
-        res.status(401).send('Student added failed !')
-    }
+    res.status(201).send(allStudentInfo)
 })
 
 
+               //                                              put method
+app.put(`/studentInfo/:id` , (req, res) => {
+            const {id} = req.params
+            const studentIndex = allStudentInfo.find((student) => student.id ==  parseInt(id))
+            if (studentIndex) {
+                const updatedStudent = req.body
+                allStudentInfo[studentIndex] = updatedStudent
+                res.send(updatedStudent)
+            } else {
+                res.status(404).send({ message: `Student with ID ${id} not found` })
+            }
+})
 
+
+//                                                         delete method
+app.delete(`/studentInfo/:id`, (req, res) => {
+            const {id} = req.params
+            const studentIndex = allStudentInfo.findIndex((student) => student.id == parseInt(id))
+            if (studentIndex !== -1) {
+              const deletedStudent = allStudentInfo.splice(studentIndex, 1)
+                res.send({ message: `Student with ID ${id} deleted successfully`, deletedStudent: deletedStudent })
+            } else {
+                res.status(404).send({ message: `Student with ID ${id} not found` })
+            }
+})
 app.listen(3000, () => {
     console.log('Server is running on port 3000')
 })
